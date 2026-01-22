@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Manrope:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sora:wght@100..800&family=Unbounded:wght@200..900&display=swap");
+
+@import "tailwindcss";
+
+
+:root{
+   --bg-primary: #000a18;
+   --bg-secondary:#FF14A5B5;
+   --text-primary:white;
+   --text-secondary:#FF14A5B5;
+   --text-teritiary:#007aff;
+   --text-quart:#FF1115;
+}
+
+
+
+
+body {
+  font-family: "Manrope", sans-serif;
+  margin: 0;
+  background-color: var(--bg-primary);
+}
+

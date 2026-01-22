@@ -1,0 +1,141 @@
+@font-face {
+  font-family: "Neulis Cursive";
+  src: url("/src/assets/fonts/fonnts.com-Neulis_Cursive_Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Britney";
+  src: url("/src/assets/fonts/Britney.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+#navbar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-name h1 {
+  font-family: "Britney", sans-serif;
+  margin-left: 20px;
+  color: var(--text-primary);
+  font-size: 48px;
+  font-weight: 500;
+  text-shadow: 2px 2px 2px #f199d0ef;
+}
+
+.brand-links {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}
+
+.nav-link {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  margin-left: 12px;
+  padding: 15px 24px;
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  transition: all 0.6s ease-out;
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  color: var(--text-secondary);
+  font-weight: 900;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  color: black;
+  font-weight: 700;
+}
+
+.navbar-toggler {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  #navbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 16px;
+  }
+
+  .brand {
+    width: 100%;
+    padding: 0;
+  }
+
+  .brand-links {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      height 0.35s ease,
+      opacity 0.35s ease,
+      transform 0.35s ease;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    padding-top: 16px;
+  }
+
+  .brand-links.open {
+    display: flex;
+    max-height: 400px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    background: none;
+    width: 80%;
+    text-align: right;
+    opacity: 1;
+    transform: none;
+    padding: 12px 0;
+  }
+
+  .nav-link.active {
+    background: none;
+    color: var(--text-secondary);
+  }
+
+  .navbar-toggler {
+    display: block;
+  }
+}

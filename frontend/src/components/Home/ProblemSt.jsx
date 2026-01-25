@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./problemst.css";
+import { useRef, useState } from "react";
 
 export default function ProblemSt() {
+  const featRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0,
+        rootMargin: "0px 0px -100px 0px",
+      },
+    );
+    if (featRef.current) observer.observe(featRef.current);
+    return () => observer.disconnect();
+  });
   return (
-    <div id="problem-statement">
+    <div
+      id="problem-statement"
+      ref={featRef}
+      className={`feature ${visible ? "visible" : ""}`}
+    >
       <div className="punchline">
         <div>
           <img src="./bg.jpg" alt="" className="hero-image" />
@@ -26,9 +49,8 @@ export default function ProblemSt() {
       <div className="main-features">
         <div className="col1">
           <div className="task">
-   
-    <h2>Task-Aware Model Selection</h2>
-  </div>
+            <h2>Task-Aware Model Selection</h2>
+          </div>
 
           <div className="hybrid">
             <h2>Hybrid AI Execution</h2>

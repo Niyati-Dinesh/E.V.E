@@ -1,0 +1,290 @@
+/* =========================
+   SECTION TITLE
+========================= */
+.main-power {
+  text-align: center;
+  font-size: 48px;
+  max-width: 9em;
+  font-weight: 700;
+  margin: 10% auto 10%;
+  color: white;
+  font-family: "Unbounded", sans-serif;
+}
+
+.future {
+  color: var(--text-secondary);
+}
+
+/* =========================
+   GRID
+========================= */
+.what-powers {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.col1,
+.col2 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.col1 {
+  margin-top: 5%;
+}
+/* =========================
+   CARD BASE
+========================= */
+.pow1,
+.pow2,
+.pow3,
+.pow4 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 22px;
+  gap: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(28px); /* base animation offset */
+}
+
+.pow1:hover,
+.pow2:hover,
+.pow3:hover,
+.pow4:hover {
+  border-color: rgba(236, 72, 153, 0.4);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.25);
+}
+
+/* =========================
+   SKEW GROUP (1–2)
+========================= */
+.pow1,
+.pow2 {
+  transform: skewY(-5deg) translateY(28px);
+}
+
+.pow1 h1,
+.pow1 h3,
+.pow2 h1,
+.pow2 h3 {
+  transform: skewY(5deg);
+  margin: 0;
+  color: white;
+  font-family:
+    Nunito,
+    -apple-system,
+    "Open Sans",
+    system-ui,
+    sans-serif;
+}
+
+/* =========================
+   VIDEO CARD (pow1)
+========================= */
+.pow1 {
+  height: 498px;
+  overflow: hidden;
+}
+
+.agent-video {
+  position: absolute;
+  bottom: -11.5em;
+  left: 50%;
+  transform: translateX(-50%) skewY(5deg);
+  width: 120%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pow1 h1,
+.pow1 h3 {
+  position: relative;
+  z-index: 5;
+}
+
+/* =========================
+   ENTERPRISE RELIABILITY (pow2)
+========================= */
+.pow2 {
+  background:
+    radial-gradient(circle at 90% 90%, #ff14a5b5 0%, rgba(2, 6, 23, 0) 60%),
+    #020617;
+  height: 300px;
+  display: flex;
+  justify-content: end;
+}
+
+/* =========================
+   PURPLE CARD (pow3)
+========================= */
+.pow3 {
+  transform: skewY(-5deg) translateY(28px);
+  background: var(--bg-primary) url("./blur-gradient.jpg") no-repeat 50%
+    70%/800px auto;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  justify-content: end;
+}
+
+.pow3::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.bglogo {
+  position: absolute;
+
+  top: -60%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pow3 h1,
+.pow3 h3 {
+  transform: skewY(-5deg);
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  color: white;
+  font-family:
+    Nunito,
+    -apple-system,
+    "Open Sans",
+    system-ui,
+    sans-serif;
+}
+
+/* =========================
+   MULTIPLE STREAMS (pow4)
+========================= */
+.pow4 {
+  transform: skewY(-5deg) translateY(28px);
+  height: 600px;
+  overflow: hidden;
+}
+
+.pow4 h1,
+.pow4 h3 {
+  transform: skewY(-5deg);
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  color: white;
+  font-family:
+    Nunito,
+    -apple-system,
+    "Open Sans",
+    system-ui,
+    sans-serif;
+}
+
+.revenue-video {
+  position: absolute;
+
+  left: 50%;
+  transform: translateX(-50%) skewY(5deg);
+  width: 120%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+.powers .main-power {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: fadeUp 0.7s ease forwards 0.35s;
+}
+
+.powers .pow1 {
+  animation: fadeSkewUpRight 0.7s ease forwards 0.7s;
+}
+.powers .pow3 {
+  animation: fadeSkewUpLeft 0.7s ease forwards 1s;
+}
+.powers .pow2 {
+  animation: fadeSkewUpRight 0.7s ease forwards 1.3s;
+}
+.powers .pow4 {
+  animation: fadeSkewUpLeft 0.7s ease forwards 1.4s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSkewUpRight {
+  to {
+    opacity: 1;
+    transform: skewY(-5deg) translateY(0);
+  }
+}
+@keyframes fadeSkewUpLeft {
+  to {
+    opacity: 1;
+    transform: skewY(5deg) translateY(0);
+  }
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+.what-powers h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.what-powers h3 {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.8;
+  line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+    .main-power{
+        font-size: 32px;
+    }
+  .what-powers {
+    display: flex;
+    flex-direction: column;
+  }
+  @keyframes fadeSkewUpLeft {
+    to {
+      opacity: 1;
+      transform: skewY(-5deg) translateY(0);
+    }
+  }
+  .pow4 h1,
+  .pow3 h1,
+  .pow4 h3,
+  .pow3 h3 {
+    transform: skewY(5deg) translateY(28px);
+  }
+}
+

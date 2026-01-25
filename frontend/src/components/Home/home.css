@@ -67,7 +67,25 @@
   transform: translateY(-3px);
   opacity: 0.9;
 }
+.title .hero-title,
+.title .hero-sub,
+.title .hero-cta {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: opacity, transform;
+}
+.title.visible .hero-title,.title.visible .hero-sub,.title.visible .hero-cta{
+  animation: skillFadeUp 0.7s ease forwards;
+  animation-delay: .10s;
+}
+ 
 
+@keyframes skillFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @media (max-width: 768px) {
   #home {

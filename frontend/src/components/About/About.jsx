@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./About.css";
 import aboutVideo1 from "/about_video1.mp4";
 import aboutVideo2 from "/about_video2.mp4";
-
+import { Link } from "react-router-dom";
 const About = () => {
   const scrollRefs = useRef([]);
 
@@ -50,8 +50,6 @@ const About = () => {
           intelligent task distribution
         </div>
       </div>
-
-   
 
       {/* Why EVE Exists Section */}
       <div className="exists">
@@ -150,7 +148,7 @@ const About = () => {
         <div className="bg"></div>
         <div className="text js_detect-scroll" ref={addToRefs}>
           <h2 className="title">
-            Be A Part Of The 
+            Be A Part Of The
             <br />
             Future
           </h2>
@@ -160,7 +158,9 @@ const About = () => {
             execution ecosystem.
           </div>
           <button className="btn btn-secondary">
-            <span>Get Started</span>
+            <Link to="/login">
+              <span>Get Started</span>
+            </Link>
           </button>
         </div>
       </div>

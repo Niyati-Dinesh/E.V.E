@@ -29,5 +29,5 @@ body {
 }
 
 .app-main {
-  flex: 1; /* 👈 THIS pushes the footer down */
+  flex: 1; 
 }

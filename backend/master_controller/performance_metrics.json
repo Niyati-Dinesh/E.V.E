@@ -1,0 +1,32 @@
+{
+  "Worker-Analysis": {
+    "success_count": 1,
+    "failure_count": 0,
+    "total_tasks": 1,
+    "avg_response_time": 23.745752811431885,
+    "avg_quality_score": 8,
+    "total_tokens_used": 0,
+    "total_cost": 0.0,
+    "last_failure_time": null,
+    "consecutive_failures": 0,
+    "uptime_percentage": 100.0,
+    "task_types": {
+      "analysis": 1
+    }
+  },
+  "Worker-Coding": {
+    "success_count": 0,
+    "failure_count": 1,
+    "total_tasks": 1,
+    "avg_response_time": 2.5258190631866455,
+    "avg_quality_score": 2,
+    "total_tokens_used": 0,
+    "total_cost": 0.0,
+    "last_failure_time": "2026-01-18T23:18:09.169931",
+    "consecutive_failures": 1,
+    "uptime_percentage": 0.0,
+    "task_types": {
+      "coding": 1
+    }
+  }
+}

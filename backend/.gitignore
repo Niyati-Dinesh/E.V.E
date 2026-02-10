@@ -1,0 +1,51 @@
+# Environment variables and secrets
+.env
+*.env
+**/.env
+.env.local
+.env.*.local
+
+# API Keys and credentials
+**/config/secrets.json
+**/config/credentials.json
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Temporary files
+tmp/
+temp/
+*.tmp

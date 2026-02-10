@@ -1,28 +1,24 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import aboutVideo2 from "/about_video2.mp4";
-import {
-  Mail,
-  Lock,
-  User,
-  Eye,
-  EyeOff,
-  LogIn,
-  UserPlus,
-} from "lucide-react";
-import toast from "react-hot-toast";
+import { Mail, Lock, Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 import "./auth.css";
+import { login, register } from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AuthComponent() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const { setUser } = useAuth();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -32,21 +28,46 @@ export default function AuthComponent() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ✅ This prevents default form submission
+    e.stopPropagation(); // ✅ Stop event bubbling
+    
     setLoading(true);
 
-    // Add your authentication logic here
+    // Validation for registration
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      setLoading(false);
+      return;
+    }
+
+    if (!isLogin && formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters!");
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const data = isLogin
+        ? await login(formData.email, formData.password)
+        : await register(formData.email, formData.password);
+
+      setUser(data);
+      toast.success(isLogin ? "Login successful!" : "Account created!");
       
-      if (isLogin) {
-        toast.success("Login successful!");
-      } else {
-        toast.success("Registration successful!");
-      }
-    } catch (error) {
-      toast.error("Something went wrong!");
+      // Reset form
+      setFormData({
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      // Redirect after successful login
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
+      
+    } catch (err) {
+      toast.error(err.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -54,6 +75,7 @@ export default function AuthComponent() {
 
   return (
     <div id="authform">
+      <Toaster position="top-center" />
       <div className="form">
         <div className="left">
           <video
@@ -68,17 +90,32 @@ export default function AuthComponent() {
 
         <div className="right">
           <div className="togglebt">
-           
             <button
+              type="button" // ✅ Add type="button" to prevent form submission
               className={`loginbt ${isLogin ? "active" : ""}`}
-              onClick={() => setIsLogin(true)}
+              onClick={() => {
+                setIsLogin(true);
+                setFormData({
+                  email: "",
+                  password: "",
+                  confirmPassword: "",
+                });
+              }}
             >
               <LogIn />
               Login
             </button>
             <button
+              type="button" // ✅ Add type="button" to prevent form submission
               className={`registerbt ${!isLogin ? "active" : ""}`}
-              onClick={() => setIsLogin(false)}
+              onClick={() => {
+                setIsLogin(false);
+                setFormData({
+                  email: "",
+                  password: "",
+                  confirmPassword: "",
+                });
+              }}
             >
               <UserPlus />
               Register
@@ -98,7 +135,6 @@ export default function AuthComponent() {
             </div>
 
             <div className="fields">
-              
               <div className="field-wrapper">
                 <Mail />
                 <input
@@ -108,6 +144,7 @@ export default function AuthComponent() {
                   onChange={handleInputChange}
                   placeholder="Email Address"
                   required
+                  autoComplete="email"
                 />
               </div>
 
@@ -120,11 +157,14 @@ export default function AuthComponent() {
                   onChange={handleInputChange}
                   placeholder="Password"
                   required
+                  minLength={6}
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                 />
                 <button
-                  type="button"
+                  type="button" // ✅ Prevents form submission
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
                 </button>
@@ -140,20 +180,23 @@ export default function AuthComponent() {
                     onChange={handleInputChange}
                     placeholder="Confirm Password"
                     required={!isLogin}
+                    minLength={6}
+                    autoComplete="new-password"
                   />
                   <button
-                    type="button"
+                    type="button" // ✅ Prevents form submission
                     className="password-toggle"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label="Toggle confirm password visibility"
                   >
                     {showConfirmPassword ? <EyeOff /> : <Eye />}
                   </button>
                 </div>
               )}
 
-              <button
-                type="submit"
-                className="submit-btn"
+              <button 
+                type="submit" 
+                className="submit-btn" 
                 disabled={loading}
               >
                 {loading ? (
@@ -169,7 +212,12 @@ export default function AuthComponent() {
 
             {isLogin && (
               <div className="forgot-password">
-                <a href="#forgot">Forgot Password?</a>
+                <a 
+                  href="#forgot" 
+                  onClick={(e) => e.preventDefault()} // ✅ Prevent navigation
+                >
+                  Forgot Password?
+                </a>
               </div>
             )}
           </form>

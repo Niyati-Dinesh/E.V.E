@@ -1,0 +1,180 @@
+/* ========================================
+   CHAT INTERFACE - BASE
+======================================== */
+#chat-interface {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15%;
+}
+
+video-and-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   CENTER VIDEO
+======================================== */
+.dashboard-video {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  width: 35%;
+  max-width: 500px;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 24px;
+}
+.dash-bg {
+  position: relative;
+  right: 60%;
+  z-index: 3;
+}
+
+/* ========================================
+   ARC CONTAINER
+======================================== */
+.fn-cards {
+  position: absolute;
+  bottom: 0%;
+  top: 4%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.arc-ui {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 220px;
+  pointer-events: all;
+}
+
+/* ========================================
+   CARD BASE STYLE
+======================================== */
+.ui-card {
+  position: absolute;
+  width: 160px;
+  height: 70%;
+
+  transform: skewY(5deg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.6s ease-out;
+  cursor: pointer;
+  font-family:
+    Nunito,
+    -apple-system,
+    "Open Sans",
+    system-ui,
+    sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+
+  box-shadow:
+    0 25px 45px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform-origin: center bottom;
+  will-change: transform;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ui-card:hover {
+  border-color: rgba(236, 72, 153, 0.4);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+
+  transform: translateY(-5px);
+}
+
+/* ========================================
+   CARD POSITIONS (ARC SHAPE)
+======================================== */
+.ui-card.left {
+  left: 0;
+  top: 75px;
+  z-index: 1;
+  opacity: 0.85;
+  transform: rotate(-22deg);
+  animation: floatLeft 6.5s ease-in-out infinite;
+  background:
+    radial-gradient(circle at 90% 0%, #ff14a5b5 -60%, rgba(2, 6, 23, 0) 60%),
+    #020617;
+}
+
+.ui-card.center {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) scale(1.06);
+  z-index: 3;
+  animation: floatCenter 6.5s ease-in-out infinite 1s;
+  background:
+    radial-gradient(circle at 50% 0%, #ff14a5b5 -60%, rgba(2, 6, 23, 0) 60%),
+    #020617;
+}
+
+.ui-card.right {
+  right: 0;
+  top: 75px;
+  z-index: 1;
+  opacity: 0.85;
+  transform: rotate(22deg);
+  animation: floatRight 6.5s ease-in-out infinite 2s;
+  background:
+    radial-gradient(circle at 0% 0%, #ff14a5b5 -60%, rgba(2, 6, 23, 0) 60%),
+    #020617;
+}
+
+/* ========================================
+   FLOATING ANIMATIONS
+======================================== */
+@keyframes floatLeft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-22deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-22deg);
+  }
+}
+
+@keyframes floatCenter {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1.06);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px) scale(1.06);
+  }
+}
+
+@keyframes floatRight {
+  0%,
+  100% {
+    transform: translateY(0) rotate(22deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(22deg);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */

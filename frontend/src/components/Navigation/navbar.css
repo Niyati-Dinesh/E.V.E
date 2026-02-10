@@ -15,6 +15,7 @@
   font-display: swap;
 }
 
+/* Main Navbar Container */
 #navbar {
   position: fixed;
   top: 10px;
@@ -24,9 +25,13 @@
   background: rgba(255, 255, 255, 0.05);
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
-  border-radius: 16px;
-  padding: 12px;
+  border-radius: 48px;
+  padding: 19px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  
 }
 
 .brand {
@@ -42,100 +47,468 @@
   font-size: 48px;
   font-weight: 500;
   text-shadow: 2px 2px 2px #f199d0ef;
+  margin: 0;
 }
 
 .brand-links {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: white;
+  gap: 12px;
 }
 
 .nav-link {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   border-radius: 16px;
-  margin-left: 12px;
   padding: 15px 24px;
   text-decoration: none;
   color: white;
   font-size: 14px;
-  transition: all 0.6s ease-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  font-weight: 500;
 }
 
 .nav-link.active {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
+
   color: var(--text-secondary);
   font-weight: 900;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.15);
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
-  color: black;
-  font-weight: 700;
+
+  color: white;
+  transform: translateY(-2px);
 }
 
+/* User Dropdown Styles */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
+}
+
+.user-dropdown > button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.user-dropdown > button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.user-dropdown > button span {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* User Menu Dropdown */
+.user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: dropdownFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes dropdownFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.user-menu button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.user-menu button svg {
+  width: 16px;
+  height: 16px;
+  color: #ff6b6b;
+}
+
+/* Mobile Toggle Button */
 .navbar-toggler {
   display: none;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
+
+.navbar-toggler:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.navbar-toggler:active {
+  transform: scale(0.95);
+}
+
+.navbar-toggler svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ================================================
+   MOBILE RESPONSIVE DESIGN
+   ================================================ */
 
 @media (max-width: 768px) {
   #navbar {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 16px;
+    padding: 12px 16px;
   }
 
   .brand {
     width: 100%;
     padding: 0;
+    position: relative;
+  }
+
+  .brand-name h1 {
+    font-size: 32px;
+    margin-left: 4px;
+  }
+
+  /* Show mobile toggle */
+  .navbar-toggler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile Menu Overlay */
+  .brand-links {
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    right: 10px;
+    background: rgba(20, 20, 30, 0.714);
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    flex-direction: column;
+    gap: 0;
+    padding: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-20px) scale(0.95);
+    transition:
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.35s ease,
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.3s ease;
+    pointer-events: none;
+  }
+
+  /* Open State */
+  .brand-links.open {
+    max-height: 650px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+  }
+
+  /* Staggered Animation for Menu Items */
+  .brand-links.open > *:nth-child(1) {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s backwards;
+  }
+
+  .brand-links.open > *:nth-child(2) {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
+  }
+
+  .brand-links.open > *:nth-child(3) {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards;
+  }
+
+  .brand-links.open > *:nth-child(4) {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+  }
+
+  .brand-links.open > *:nth-child(5) {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s backwards;
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile Nav Links */
+  .nav-link {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 500;
+
+    margin-bottom: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-link:last-of-type {
+    margin-bottom: 0;
+  }
+
+  
+  .nav-link.active {
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+
+    color: var(--text-secondary);
+    font-weight: 900;
+  }
+
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(6px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-link:active {
+    transform: scale(0.98) translateX(6px);
+  }
+
+  .nav-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  
+  .user-dropdown {
+    width: 100%;
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .user-dropdown > button {
+    width: 100%;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(
+      135deg,
+      rgba(241, 153, 208, 0.12) 0%,
+      rgba(255, 107, 107, 0.08) 100%
+    );
+    border-color: rgba(241, 153, 208, 0.25);
+    border-radius: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .user-dropdown > button:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(241, 153, 208, 0.2) 0%,
+      rgba(255, 107, 107, 0.15) 100%
+    );
+    border-color: rgba(241, 153, 208, 0.35);
+    transform: translateY(0);
+    box-shadow: 0 4px 16px rgba(241, 153, 208, 0.2);
+  }
+
+  .user-dropdown > button span {
+    max-width: 200px;
+    font-size: 14px;
+  }
+
+  .user-dropdown > button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mobile User Menu */
+  .user-menu {
+    position: static;
+    width: 100%;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .user-menu button {
+    padding: 14px 20px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+
+  .user-menu button:hover {
+    background: rgba(255, 107, 107, 0.2);
+    transform: translateX(6px);
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  }
+
+  .user-menu button svg {
+    width: 18px;
+    height: 18px;
+    color: #ff6b6b;
+  }
+}
+
+/* Extra Small Devices (phones in portrait) */
+@media (max-width: 480px) {
+  .brand-name h1 {
+    font-size: 28px;
   }
 
   .brand-links {
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transform: translateY(-6px);
-    transition:
-      height 0.35s ease,
-      opacity 0.35s ease,
-      transform 0.35s ease;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-    padding-top: 16px;
-  }
-
-  .brand-links.open {
-    display: flex;
-    max-height: 400px;
-    opacity: 1;
-    transform: translateY(0);
+    top: 75px;
   }
 
   .nav-link {
-    background: none;
-    width: 80%;
-    text-align: right;
-    opacity: 1;
-    transform: none;
-    padding: 12px 0;
+    padding: 14px 18px;
+    font-size: 14px;
   }
 
-  .nav-link.active {
-    background: none;
-    color: var(--text-secondary);
+  .user-dropdown > button {
+    padding: 14px 18px;
   }
 
-  .navbar-toggler {
-    display: block;
+  .user-menu button {
+    padding: 12px 18px;
+  }
+}
+
+/* Very Small Devices */
+@media (max-width: 360px) {
+  #navbar {
+    left: 8px;
+    right: 8px;
+    top: 8px;
+  }
+
+  .brand-name h1 {
+    font-size: 24px;
+  }
+
+  .brand-links {
+    left: 8px;
+    right: 8px;
+    top: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* Smooth transitions and tap highlights */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+@media (max-width: 768px) {
+  #navbar::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    transition: background 0.3s ease;
+    z-index: -1;
+  }
+
+  #navbar.expanded::after {
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: all;
   }
 }

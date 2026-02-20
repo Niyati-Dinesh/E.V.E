@@ -17,9 +17,25 @@ export const getMe = () => apiFetch("/auth/me");
 
 export const logout = () => apiFetch("/auth/logout", { method: "POST" });
 
+// ── Email Verification Flow (signup) ───────────────────────────────────────
+
+/** Step 1 — Send OTP to email before account creation */
+export const sendVerificationCode = (email) =>
+  apiFetch("/api/send-verification", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+
+/** Step 2 — Verify OTP; resolves { verified: true } */
+export const verifyEmailCode = (email, otp) =>
+  apiFetch("/api/verify-email", {
+    method: "POST",
+    body: JSON.stringify({ email, otp }),
+  });
+
 // ── Forgot Password Flow ────────────────────────────────────────────────────
 
-/** Step 1 — Request OTP */
+/** Step 1 — Request reset OTP */
 export const requestPasswordReset = (email) =>
   apiFetch("/api/forgot-password", {
     method: "POST",

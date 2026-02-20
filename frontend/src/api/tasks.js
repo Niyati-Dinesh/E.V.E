@@ -4,7 +4,7 @@
 
 import { apiFetch } from "./client";
 
-// ── multipart/form-data helper (no Content-Type header — browser sets boundary) ──
+
 async function apiFetchForm(path, formData) {
   const res = await fetch(`http://localhost:8000${path}`, {
     method: "POST",

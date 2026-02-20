@@ -700,6 +700,10 @@
   word-spacing: 4px;
 }
 
+.future{
+  color:var(--text-secondary);
+}
+
 .about .join .descr {
   margin: 0 auto;
   max-width: 26em;

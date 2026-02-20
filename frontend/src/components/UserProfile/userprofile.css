@@ -1,0 +1,383 @@
+/* =====================================================================
+   USER PROFILE OVERLAY — UserProfile.css
+   Matches E.V.E. design system (dark, pink accent, glassmorphism)
+   ===================================================================== */
+
+@keyframes profileFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes profileSlideIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Overlay backdrop ────────────────────────────────────────────── */
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: profileFadeIn 0.2s ease-out;
+}
+
+/* ── Modal card ──────────────────────────────────────────────────── */
+.profile-modal {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(4, 10, 22, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 22px;
+  padding: 28px 26px 26px;
+  box-shadow:
+    0 0 0 1px rgba(255, 20, 165, 0.08),
+    0 28px 72px rgba(0, 0, 0, 0.65),
+    0 0 80px rgba(255, 20, 165, 0.04);
+  animation: profileSlideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Top-edge pink accent line */
+  overflow: hidden;
+}
+
+.profile-modal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 20, 165, 0.55), transparent);
+  border-radius: 1px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.profile-header-label {
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 20, 165, 0.7);
+}
+
+.profile-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.profile-close:hover {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Avatar section ──────────────────────────────────────────────── */
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+}
+
+.profile-avatar-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 20, 165, 0.3);
+  display: block;
+}
+
+.profile-avatar-initials {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 20, 165, 0.18), rgba(0, 122, 255, 0.12));
+  border: 1px solid rgba(255, 20, 165, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Unbounded", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Loading overlay on avatar while uploading */
+.profile-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 2;
+}
+
+/* Camera change button */
+.profile-avatar-btn {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(255, 20, 165, 0.85);
+  border: 1.5px solid rgba(4, 10, 22, 0.9);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  z-index: 3;
+}
+
+.profile-avatar-btn:hover {
+  background: rgb(255, 20, 165);
+  transform: scale(1.12);
+}
+
+.profile-avatar-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-display-name {
+  font-family: "Manrope", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.profile-email-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────── */
+.profile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-bottom: 22px;
+}
+
+/* ── Form fields ─────────────────────────────────────────────────── */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.profile-label {
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.profile-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 10px 13px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-input-wrap:focus-within {
+  border-color: rgba(255, 20, 165, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 20, 165, 0.06);
+}
+
+.profile-input-wrap svg {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.profile-input-wrap input,
+.profile-input-wrap textarea {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: "Manrope", sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  min-width: 0;
+}
+
+.profile-input-wrap input::placeholder,
+.profile-input-wrap textarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Textarea wrap */
+.profile-textarea-wrap {
+  align-items: flex-start;
+  padding: 10px 13px;
+}
+
+.profile-input-wrap textarea {
+  resize: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 20, 165, 0.3) transparent;
+}
+
+.profile-char-count {
+  font-family: "Manrope", sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: right;
+  line-height: 1;
+  margin-top: -2px;
+}
+
+/* ── Error ───────────────────────────────────────────────────────── */
+.profile-error {
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  color: rgba(252, 165, 165, 0.85);
+  margin: 2px 0 0;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+}
+
+/* ── Save button ─────────────────────────────────────────────────── */
+.profile-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 20, 165, 0.25);
+  background: rgba(255, 20, 165, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, border-color 0.2s ease,
+              color 0.2s ease, transform 0.18s ease;
+}
+
+.profile-save-btn:hover:not(:disabled) {
+  background: rgba(255, 20, 165, 0.2);
+  border-color: rgba(255, 20, 165, 0.5);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.profile-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* "Saved" confirmation state */
+.profile-save-btn.saved {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: rgba(134, 239, 172, 0.9);
+  pointer-events: none;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────── */
+.spin {
+  animation: spin 0.9s linear infinite;
+  display: inline-flex;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .profile-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .profile-modal {
+    border-radius: 22px 22px 0 0;
+    max-width: 100%;
+    max-height: 92svh;
+    overflow-y: auto;
+    padding: 24px 20px 32px;
+  }
+
+  .profile-avatar-wrap,
+  .profile-avatar-img,
+  .profile-avatar-initials {
+    width: 62px;
+    height: 62px;
+  }
+
+  .profile-avatar-initials {
+    font-size: 18px;
+  }
+}

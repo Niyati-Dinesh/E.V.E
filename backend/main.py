@@ -10,7 +10,9 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.routers import auth, tasks, feedback, forgot_password
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+from api.routers import auth, tasks, feedback, forgot_password, verify_email, profile
 import subprocess
 import sys
 import os
@@ -27,10 +29,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve uploaded avatars as static files
+# Avatars are saved to static/avatars/ by the profile router
+static_dir = Path("static")
+static_dir.mkdir(exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 app.include_router(auth.router)
 app.include_router(tasks.router)
 app.include_router(feedback.router)
 app.include_router(forgot_password.router)
+app.include_router(verify_email.router)
+app.include_router(profile.router)
 
 
 @app.get("/")
@@ -54,7 +64,7 @@ def _start_eve_system():
     """Launch start_system.py after uvicorn has fully bound port 8000."""
     global _eve_process
 
-    time.sleep(3)  # wait for uvicorn to finish binding
+    time.sleep(3)
 
     project_root = os.path.dirname(os.path.abspath(__file__))
     start_script = os.path.join(project_root, "start_system.py")
@@ -69,7 +79,6 @@ def _start_eve_system():
     try:
         kwargs = {}
         if sys.platform == "win32":
-            # Open in a new console window so you can see master output
             kwargs["creationflags"] = subprocess.CREATE_NEW_CONSOLE
 
         _eve_process = subprocess.Popen(
@@ -84,5 +93,4 @@ def _start_eve_system():
         print(f"   Run manually:  python start_system.py")
 
 
-# Daemon thread — won't block uvicorn shutdown
 threading.Thread(target=_start_eve_system, daemon=True).start()

@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import aboutVideo2 from "/about_video2.mp4";
-import { Mail, Lock, Eye, EyeOff, LogIn, UserPlus, ArrowLeft, KeyRound, ShieldCheck } from "lucide-react";
+import {
+  Mail, Lock, Eye, EyeOff, LogIn, UserPlus,
+  ArrowLeft, KeyRound, ShieldCheck,
+} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import "./auth.css";
-import { login, register, requestPasswordReset, verifyOTP, resetPassword } from "../../api/auth";
+import {
+  login, register,
+  requestPasswordReset, verifyOTP, resetPassword,
+  sendVerificationCode, verifyEmailCode,
+} from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 
 // ─── Forgot Password Sub-views ─────────────────────────────────────────────
 
 function ForgotStep1({ onBack, onNext }) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail]     = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -32,30 +39,17 @@ function ForgotStep1({ onBack, onNext }) {
       <button type="button" className="back-btn" onClick={onBack}>
         <ArrowLeft size={16} /> Back
       </button>
-
       <div className="intro">
-        <div className="forgot-icon-wrap">
-          <KeyRound size={28} color="#FF14A5" />
-        </div>
+        <div className="forgot-icon-wrap"><KeyRound size={28} color="#FF14A5" /></div>
         <h1 className="intro-title">Forgot Password</h1>
-        <p className="intro-desc">
-          Enter your email and we'll send you a 6-digit code.
-        </p>
+        <p className="intro-desc">Enter your email and we'll send you a 6-digit code.</p>
       </div>
-
       <div className="fields">
         <div className="field-wrapper">
           <Mail />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email Address"
-            required
-            autoComplete="email"
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email Address" required autoComplete="email" />
         </div>
-
         <button type="submit" className="submit-btn" disabled={loading}>
           {loading ? <span className="spinner" /> : <>Send Reset Code</>}
         </button>
@@ -65,7 +59,7 @@ function ForgotStep1({ onBack, onNext }) {
 }
 
 function ForgotStep2({ email, onBack, onNext }) {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp]         = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -87,33 +81,23 @@ function ForgotStep2({ email, onBack, onNext }) {
       <button type="button" className="back-btn" onClick={onBack}>
         <ArrowLeft size={16} /> Back
       </button>
-
       <div className="intro">
-        <div className="forgot-icon-wrap">
-          <ShieldCheck size={28} color="#FF14A5" />
-        </div>
+        <div className="forgot-icon-wrap"><ShieldCheck size={28} color="#FF14A5" /></div>
         <h1 className="intro-title">Enter Code</h1>
         <p className="intro-desc">
-          We sent a 6-digit code to <strong style={{ color: "rgba(255,255,255,0.8)" }}>{email}</strong>
+          We sent a 6-digit code to{" "}
+          <strong style={{ color: "rgba(255,255,255,0.8)" }}>{email}</strong>
         </p>
       </div>
-
       <div className="fields">
         <div className="field-wrapper">
           <KeyRound />
-          <input
-            type="text"
-            value={otp}
+          <input type="text" value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            placeholder="000000"
-            required
-            maxLength={6}
-            inputMode="numeric"
+            placeholder="000000" required maxLength={6} inputMode="numeric"
             autoComplete="one-time-code"
-            style={{ letterSpacing: "0.25em", fontSize: "20px", fontWeight: 700 }}
-          />
+            style={{ letterSpacing: "0.25em", fontSize: "20px", fontWeight: 700 }} />
         </div>
-
         <button type="submit" className="submit-btn" disabled={loading || otp.length < 6}>
           {loading ? <span className="spinner" /> : <>Verify Code</>}
         </button>
@@ -123,17 +107,16 @@ function ForgotStep2({ email, onBack, onNext }) {
 }
 
 function ForgotStep3({ resetToken, onDone }) {
-  const [password, setPassword]       = useState("");
-  const [confirm, setConfirm]         = useState("");
-  const [showPw, setShowPw]           = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [loading, setLoading]         = useState(false);
+  const [password, setPassword]     = useState("");
+  const [confirm, setConfirm]       = useState("");
+  const [showPw, setShowPw]         = useState(false);
+  const [showCnf, setShowCnf]       = useState(false);
+  const [loading, setLoading]       = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirm) return toast.error("Passwords do not match");
     if (password.length < 6)  return toast.error("Password must be at least 6 characters");
-
     setLoading(true);
     try {
       await resetPassword(resetToken, password);
@@ -149,48 +132,110 @@ function ForgotStep3({ resetToken, onDone }) {
   return (
     <form onSubmit={handleSubmit} className="input-form forgot-form">
       <div className="intro">
-        <div className="forgot-icon-wrap">
-          <Lock size={28} color="#FF14A5" />
-        </div>
+        <div className="forgot-icon-wrap"><Lock size={28} color="#FF14A5" /></div>
         <h1 className="intro-title">New Password</h1>
         <p className="intro-desc">Choose a strong password for your account.</p>
       </div>
-
       <div className="fields">
         <div className="field-wrapper">
           <Lock />
-          <input
-            type={showPw ? "text" : "password"}
-            value={password}
+          <input type={showPw ? "text" : "password"} value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="New Password"
-            required
-            minLength={6}
-            autoComplete="new-password"
-          />
+            placeholder="New Password" required minLength={6} autoComplete="new-password" />
           <button type="button" className="password-toggle" onClick={() => setShowPw(!showPw)}>
             {showPw ? <EyeOff /> : <Eye />}
           </button>
         </div>
-
         <div className="field-wrapper">
           <Lock />
-          <input
-            type={showConfirm ? "text" : "password"}
-            value={confirm}
+          <input type={showCnf ? "text" : "password"} value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            placeholder="Confirm Password"
-            required
-            minLength={6}
-            autoComplete="new-password"
-          />
-          <button type="button" className="password-toggle" onClick={() => setShowConfirm(!showConfirm)}>
-            {showConfirm ? <EyeOff /> : <Eye />}
+            placeholder="Confirm Password" required minLength={6} autoComplete="new-password" />
+          <button type="button" className="password-toggle" onClick={() => setShowCnf(!showCnf)}>
+            {showCnf ? <EyeOff /> : <Eye />}
           </button>
         </div>
-
         <button type="submit" className="submit-btn" disabled={loading}>
           {loading ? <span className="spinner" /> : <>Reset Password</>}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// ─── Email Verification Step (shown after register form fill) ──────────────
+
+function VerifyEmailStep({ email, onBack, onVerified }) {
+  const [otp, setOtp]         = useState("");
+  const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await verifyEmailCode(email, otp.trim());
+      toast.success("Email verified!");
+      onVerified();
+    } catch (err) {
+      toast.error(err.message || "Invalid or expired code");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResending(true);
+    try {
+      await sendVerificationCode(email);
+      toast.success("New code sent!");
+    } catch (err) {
+      toast.error(err.message || "Could not resend");
+    } finally {
+      setResending(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="input-form forgot-form">
+      <button type="button" className="back-btn" onClick={onBack}>
+        <ArrowLeft size={16} /> Back
+      </button>
+      <div className="intro">
+        <div className="forgot-icon-wrap"><ShieldCheck size={28} color="#FF14A5" /></div>
+        <h1 className="intro-title">Verify Email</h1>
+        <p className="intro-desc">
+          We sent a 6-digit code to{" "}
+          <strong style={{ color: "rgba(255,255,255,0.8)" }}>{email}</strong>.
+          Enter it below to complete signup.
+        </p>
+      </div>
+      <div className="fields">
+        <div className="field-wrapper">
+          <KeyRound />
+          <input
+            type="text"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            placeholder="000000"
+            required
+            maxLength={6}
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            style={{ letterSpacing: "0.25em", fontSize: "20px", fontWeight: 700 }}
+          />
+        </div>
+        <button type="submit" className="submit-btn" disabled={loading || otp.length < 6}>
+          {loading ? <span className="spinner" /> : <>Verify & Create Account</>}
+        </button>
+        <button
+          type="button"
+          className="forgot-link"
+          onClick={handleResend}
+          disabled={resending}
+          style={{ marginTop: "8px", display: "block", textAlign: "center", width: "100%" }}
+        >
+          {resending ? "Sending…" : "Resend code"}
         </button>
       </div>
     </form>
@@ -200,15 +245,17 @@ function ForgotStep3({ resetToken, onDone }) {
 // ─── Main Auth Component ───────────────────────────────────────────────────
 
 export default function AuthComponent() {
-  // "login" | "register" | "forgot-1" | "forgot-2" | "forgot-3"
-  const [view, setView]       = useState("login");
-  const [forgotEmail, setForgotEmail]       = useState("");
+  // "login" | "register" | "verify-email" | "forgot-1" | "forgot-2" | "forgot-3"
+  const [view, setView]             = useState("login");
+  const [forgotEmail, setForgotEmail]           = useState("");
   const [forgotResetToken, setForgotResetToken] = useState("");
+  const [pendingEmail, setPendingEmail]         = useState("");
+  const [pendingPassword, setPendingPassword]   = useState("");
 
-  const [showPassword, setShowPassword]           = useState(false);
+  const [showPassword, setShowPassword]               = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [loading, setLoading]                         = useState(false);
+  const navigate   = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "" });
   const { setUser } = useAuth();
 
@@ -220,43 +267,83 @@ export default function AuthComponent() {
   const handleInputChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // ── Register: first send OTP, then show verify step ──────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     setLoading(true);
 
-    if (!isLogin && formData.password !== formData.confirmPassword) {
+    if (isLogin) {
+      try {
+        const data = await login(formData.email, formData.password);
+        setUser(data);
+        toast.success("Login successful!");
+        resetForm();
+        setTimeout(() => navigate("/dashboard"), 500);
+      } catch (err) {
+        toast.error(err.message || "Something went wrong!");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    // Register path — validate first
+    if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       setLoading(false);
       return;
     }
-    if (!isLogin && formData.password.length < 6) {
+    if (formData.password.length < 6) {
       toast.error("Password must be at least 6 characters!");
       setLoading(false);
       return;
     }
 
+    // Send verification OTP
     try {
-      const data = isLogin
-        ? await login(formData.email, formData.password)
-        : await register(formData.email, formData.password);
-
-      setUser(data);
-      toast.success(isLogin ? "Login successful!" : "Account created!");
-      resetForm();
-      setTimeout(() => navigate("/dashboard"), 500);
+      await sendVerificationCode(formData.email);
+      toast.success("Verification code sent to your email!");
+      setPendingEmail(formData.email);
+      setPendingPassword(formData.password);
+      setView("verify-email");
     } catch (err) {
-      toast.error(err.message || "Something went wrong!");
+      toast.error(err.message || "Could not send verification email");
     } finally {
       setLoading(false);
     }
   };
 
-  // ── Forgot password navigation ────────────────────────────────────────────
+  // Called after OTP verified — actually creates the account
+  const handleEmailVerified = async () => {
+    setLoading(true);
+    try {
+      const data = await register(pendingEmail, pendingPassword);
+      setUser(data);
+      toast.success("Account created!");
+      resetForm();
+      setTimeout(() => navigate("/dashboard"), 500);
+    } catch (err) {
+      toast.error(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const isForgotView = view.startsWith("forgot");
 
   const renderRight = () => {
+    // ── Email verification step ────────────────────────────────────────────
+    if (view === "verify-email")
+      return (
+        <VerifyEmailStep
+          email={pendingEmail}
+          onBack={() => setView("register")}
+          onVerified={handleEmailVerified}
+        />
+      );
+
+    // ── Forgot password steps ──────────────────────────────────────────────
     if (view === "forgot-1")
       return (
         <ForgotStep1
@@ -282,24 +369,17 @@ export default function AuthComponent() {
         />
       );
 
-    // Default: login / register
+    // ── Default: login / register ──────────────────────────────────────────
     return (
       <>
-        {/* Toggle */}
         {!isForgotView && (
           <div className="togglebt">
-            <button
-              type="button"
-              className={`loginbt ${isLogin ? "active" : ""}`}
-              onClick={() => { setView("login"); resetForm(); }}
-            >
+            <button type="button" className={`loginbt ${isLogin ? "active" : ""}`}
+              onClick={() => { setView("login"); resetForm(); }}>
               <LogIn /> Login
             </button>
-            <button
-              type="button"
-              className={`registerbt ${!isLogin ? "active" : ""}`}
-              onClick={() => { setView("register"); resetForm(); }}
-            >
+            <button type="button" className={`registerbt ${!isLogin ? "active" : ""}`}
+              onClick={() => { setView("register"); resetForm(); }}>
               <UserPlus /> Register
             </button>
           </div>
@@ -320,35 +400,20 @@ export default function AuthComponent() {
           <div className="fields">
             <div className="field-wrapper">
               <Mail />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Email Address"
-                required
-                autoComplete="email"
-              />
+              <input type="email" name="email" value={formData.email}
+                onChange={handleInputChange} placeholder="Email Address"
+                required autoComplete="email" />
             </div>
 
             <div className="field-wrapper">
               <Lock />
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                placeholder="Password"
-                required
-                minLength={6}
-                autoComplete={isLogin ? "current-password" : "new-password"}
-              />
-              <button
-                type="button"
-                className="password-toggle"
+              <input type={showPassword ? "text" : "password"} name="password"
+                value={formData.password} onChange={handleInputChange}
+                placeholder="Password" required minLength={6}
+                autoComplete={isLogin ? "current-password" : "new-password"} />
+              <button type="button" className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
-                aria-label="Toggle password visibility"
-              >
+                aria-label="Toggle password visibility">
                 {showPassword ? <EyeOff /> : <Eye />}
               </button>
             </div>
@@ -356,22 +421,13 @@ export default function AuthComponent() {
             {!isLogin && (
               <div className="field-wrapper">
                 <Lock />
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm Password"
-                  required={!isLogin}
-                  minLength={6}
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
+                <input type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword" value={formData.confirmPassword}
+                  onChange={handleInputChange} placeholder="Confirm Password"
+                  required={!isLogin} minLength={6} autoComplete="new-password" />
+                <button type="button" className="password-toggle"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  aria-label="Toggle confirm password visibility"
-                >
+                  aria-label="Toggle confirm password visibility">
                   {showConfirmPassword ? <EyeOff /> : <Eye />}
                 </button>
               </div>
@@ -383,7 +439,7 @@ export default function AuthComponent() {
               ) : (
                 <>
                   {isLogin ? <LogIn /> : <UserPlus />}
-                  {isLogin ? "Sign In" : "Create Account"}
+                  {isLogin ? "Sign In" : "Continue"}
                 </>
               )}
             </button>
@@ -391,11 +447,8 @@ export default function AuthComponent() {
 
           {isLogin && (
             <div className="forgot-password">
-              <button
-                type="button"
-                className="forgot-link"
-                onClick={() => setView("forgot-1")}
-              >
+              <button type="button" className="forgot-link"
+                onClick={() => setView("forgot-1")}>
                 Forgot Password?
               </button>
             </div>
@@ -410,18 +463,9 @@ export default function AuthComponent() {
       <Toaster position="top-center" />
       <div className="form">
         <div className="left">
-          <video
-            className="auth-video"
-            src={aboutVideo2}
-            autoPlay
-            playsInline
-            muted
-            loop
-          />
+          <video className="auth-video" src={aboutVideo2} autoPlay playsInline muted loop />
         </div>
-        <div className="right">
-          {renderRight()}
-        </div>
+        <div className="right">{renderRight()}</div>
       </div>
     </div>
   );

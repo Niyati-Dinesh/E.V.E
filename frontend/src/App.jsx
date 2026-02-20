@@ -11,6 +11,7 @@ import AuthComponent from "./components/Auth/AuthComponent";
 import Dashboard from "./components/Chat/Dashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import { ChatProvider } from "./context/ChatContext";
+import TermsAndConditions from "./components/Legal/TermsAndConditions";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
 
             <Route path="/home" element={<Main />} />
             <Route path="/about" element={<About />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
 
             {/* Guest-only */}
             <Route

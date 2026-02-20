@@ -1,0 +1,151 @@
+/* =====================================================================
+   TERMS & CONDITIONS PAGE — TermsAndConditions.css
+   Dark, minimal, editorial — matches E.V.E. site aesthetic
+   ===================================================================== */
+
+.terms-page {
+  min-height: 100vh;
+  background: #020617;
+  color: rgba(255, 255, 255, 0.82);
+  display: flex;
+  justify-content: center;
+  padding: 0 1.5rem 5rem;
+  font-family: "Manrope", Nunito, sans-serif;
+  margin-top:5%;
+}
+
+.terms-inner {
+  width: 100%;
+  max-width: 720px;
+  padding-top: 6rem;
+}
+
+/* ── Back button ── */
+.terms-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.35);
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 3rem;
+  transition: color 0.2s ease;
+}
+
+.terms-back:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Header ── */
+.terms-header {
+  margin-bottom: 2rem;
+}
+
+.terms-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 20, 165, 0.6);
+  margin: 0 0 0.75rem;
+}
+
+.terms-title {
+  font-family: "Unbounded", "Manrope", sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.terms-updated {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 0;
+}
+
+/* ── Intro paragraph ── */
+.terms-intro {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.terms-intro a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.2);
+  transition: color 0.2s ease;
+}
+
+.terms-intro a:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Sections ── */
+.terms-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.terms-section {
+  padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.terms-section:last-child {
+  border-bottom: none;
+}
+
+.terms-section-title {
+  font-family: "Manrope", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 0.75rem;
+}
+
+.terms-section-body {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* ── Footer note ── */
+.terms-footer-note {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.22);
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .terms-inner {
+    padding-top: 4rem;
+  }
+
+  .terms-title {
+    font-size: 1.5rem;
+  }
+
+  .terms-section-body {
+    font-size: 0.85rem;
+  }
+}

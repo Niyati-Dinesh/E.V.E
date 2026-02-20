@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import "./Dashboard.css";
 import {
   Send,
@@ -47,6 +47,27 @@ const welcomeMessages = [
   "Fault-tolerant intelligence awaits",
   "Let's build something remarkable",
   "Your orchestration engine is ready",
+];
+
+// Greetings used when we know the user's name
+const namedGreetings = [
+  (name) => `Welcome back, ${name}.`,
+  (name) => `Good to see you again, ${name}.`,
+  (name) => `Hey ${name}, ready to build something?`,
+  (name) => `Hello, ${name}. What are we working on today?`,
+  (name) => `${name}! Your orchestration engine is ready.`,
+  (name) => `Great to have you back, ${name}.`,
+  (name) => `What can I help you with today, ${name}?`,
+];
+
+// Greetings used when the profile has no name set
+const anonymousGreetings = [
+  "Welcome back! Ready to orchestrate intelligence?",
+  "Good to see you. What task can I distribute today?",
+  "Your adaptive AI companion is ready — what's the mission?",
+  "Hey there. Let's build something remarkable.",
+  "Intelligence, distributed efficiently. What shall we tackle?",
+  "Seamless execution starts here. What do you need?",
 ];
 
 const quickActions = [
@@ -291,7 +312,15 @@ function downloadFile(fileData) {
   }
 }
 
-function MessageBubble({ message, conversationId }) {
+// Prefix relative avatar URLs with backend origin
+const BACKEND = "http://localhost:8000";
+function resolveAvatarUrl(url) {
+  if (!url) return null;
+  if (url.startsWith("http")) return url;
+  return `${BACKEND}${url}`;
+}
+
+function MessageBubble({ message, conversationId, userAvatarUrl }) {
   const isUser = message.type === "user";
   const isError = message.type === "error";
   const content = message.content ?? "";
@@ -360,7 +389,16 @@ function MessageBubble({ message, conversationId }) {
           </div>
           {isUser && (
             <div className="message-avatar user-avatar">
-              <span className="avatar-text">You</span>
+              {userAvatarUrl ? (
+                <img
+                  src={userAvatarUrl}
+                  alt="You"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "inherit" }}
+                  onError={(e) => { e.target.style.display = "none"; }}
+                />
+              ) : (
+                <span className="avatar-text">You</span>
+              )}
             </div>
           )}
         </div>
@@ -378,7 +416,7 @@ function MessageBubble({ message, conversationId }) {
 
 // ─────────────── Dashboard ──────────────────────
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, profile } = useAuth();
   const {
     messages,
     isLoading,
@@ -395,6 +433,18 @@ export default function Dashboard() {
 
   const [inputValue, setInputValue] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
+ 
+  const greetingIdxRef = useRef(Math.floor(Math.random() * namedGreetings.length));
+  const anonIdxRef     = useRef(Math.floor(Math.random() * anonymousGreetings.length));
+
+  // Recomputes whenever profile.full_name changes (e.g. after saving in UserProfile)
+  const welcomeGreeting = useMemo(() => {
+    const name = profile?.full_name?.trim();
+    if (name) return namedGreetings[greetingIdxRef.current](name);
+    return anonymousGreetings[anonIdxRef.current];
+  }, [profile?.full_name]);
+
   const [currentWelcome] = useState(
     () => welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)],
   );
@@ -405,10 +455,11 @@ export default function Dashboard() {
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
-  // Direct ref to the scrollable messages div (no Radix layer)
   const scrollRef = useRef(null);
-  // Tracks whether the user just sent a message (so we always scroll down)
   const userJustSentRef = useRef(false);
+
+  
+  const userAvatarUrl = resolveAvatarUrl(profile?.pfp_url);
 
   // Add/remove body class to hide footer while dashboard is mounted
   useEffect(() => {
@@ -445,24 +496,20 @@ export default function Dashboard() {
       setShowScrollBtn(dist > 120);
     };
 
-    
     check();
     el.addEventListener("scroll", check, { passive: true });
     return () => el.removeEventListener("scroll", check);
   }, [hasStartedChat]);
 
-  
   useEffect(() => {
     if (!hasStartedChat) return;
     const el = scrollRef.current;
     if (!el) return;
 
     if (userJustSentRef.current) {
-      // Always jump to bottom after user sends
       el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
       userJustSentRef.current = false;
     } else {
-      // For AI replies: only follow if already near bottom
       const dist = el.scrollHeight - el.scrollTop - el.clientHeight;
       if (dist < 200) {
         el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
@@ -484,7 +531,7 @@ export default function Dashboard() {
     const files = [...uploadedFiles];
     setInputValue("");
     setUploadedFiles([]);
-    userJustSentRef.current = true; // signal: always scroll after this send
+    userJustSentRef.current = true;
     send(text, files);
   };
 
@@ -633,7 +680,7 @@ export default function Dashboard() {
         ) : !hasStartedChat ? (
           <div className="welcome-screen">
             <h1 className="welcome-text">
-              Welcome to <span className="eve-gradient">E.V.E</span>
+              {welcomeGreeting}
             </h1>
             <p className="welcome-subtitle">{currentWelcome}</p>
             <div className="video-container">
@@ -662,7 +709,6 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-         
           <div
             ref={scrollRef}
             className="messages-container"
@@ -673,6 +719,7 @@ export default function Dashboard() {
                   key={msg.id}
                   message={msg}
                   conversationId={conversationId}
+                  userAvatarUrl={userAvatarUrl}
                 />
               ))}
               {isLoading && (

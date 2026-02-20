@@ -150,7 +150,7 @@ const About = () => {
           <h2 className="title">
             Be A Part Of The
             <br />
-            Future
+           <span className="future"> Future </span>
           </h2>
           <div className="descr">
             Discover how intelligent AI orchestration can transform your
